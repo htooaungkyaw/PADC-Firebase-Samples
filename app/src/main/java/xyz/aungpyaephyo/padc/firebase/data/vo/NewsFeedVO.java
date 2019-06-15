@@ -13,8 +13,8 @@ public class NewsFeedVO {
     @SerializedName("feed_id")
     private long feedId;
 
-    @SerializedName("posted_date")
-    private long posedDate;
+    @SerializedName("postedDate")
+    private long postedDate;
 
     @SerializedName("content")
     private String content;
@@ -39,7 +39,7 @@ public class NewsFeedVO {
     }
 
     public long getPosedDate() {
-        return posedDate;
+        return postedDate;
     }
 
     public String getContent() {

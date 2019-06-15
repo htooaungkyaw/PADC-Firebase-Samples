@@ -1,9 +1,6 @@
 package xyz.aungpyaephyo.padc.firebase.data.models;
 
 import android.content.Context;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -73,10 +70,12 @@ public class NewsFeedModel {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
                     List<NewsFeedVO> newsFeedList = new ArrayList<>();
+
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         NewsFeedVO newsFeed = snapshot.getValue(NewsFeedVO.class);
                         newsFeedList.add(newsFeed);
                     }
+
                     FirebaseEvents.NewsFeedLoadedEvent event = new FirebaseEvents.NewsFeedLoadedEvent(newsFeedList);
                     EventBus.getDefault().post(event);
                 }

@@ -1,10 +1,15 @@
 package xyz.aungpyaephyo.padc.firebase.views.holders;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import butterknife.BindView;
 import xyz.aungpyaephyo.padc.firebase.R;
@@ -44,12 +49,21 @@ public class NewsFeedViewHolder extends BaseViewHolder<NewsFeedVO> {
 
     @Override
     public void bind(NewsFeedVO data) {
+        Log.d("Posted", String.valueOf(data.getPosedDate()));
+            tvPostedDate.setVisibility(View.VISIBLE);
+            final Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(data.getPosedDate());
+            final String date =
+                    new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(calendar.getTime());
+
+            tvPostedDate.setText(itemView.getContext().getString(R.string.tv_format_posted_date, date));
+
         tvUsername.setText(data.getNewsAuthor().getUserName());
-        //tvPostedDate.setText(itemView.getContext().getString(R.string.tv_format_posted_date, ));
+
         tvFeedMsg.setText(data.getContent());
         tvTotalReactions.setText(itemView.getContext().getString(R.string.format_total_reactions,
-                data.getLikes().size(),
-                data.getComments().size(),
+                data.getLikes() != null ? data.getLikes().size() : 0,
+                data.getComments() != null ? data.getComments().size() : 0,
                 data.getSendToCount()));
 
         Glide.with(itemView.getContext())
