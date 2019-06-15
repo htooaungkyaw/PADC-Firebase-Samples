@@ -55,6 +55,7 @@ public class NewsFeedModel {
 
     private NewsFeedModel() {
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
+
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
     }
@@ -110,6 +111,7 @@ public class NewsFeedModel {
 
     public void authenticateUserWithGoogleAccount(final GoogleSignInAccount signInAccount, final SignInWithGoogleAccountDelegate delegate) {
         Log.d(FirebaseApp.TAG, "signInAccount Id :" + signInAccount.getId());
+
         AuthCredential credential = GoogleAuthProvider.getCredential(signInAccount.getIdToken(), null);
         mFirebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {

@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 public class NewsAuthorVO {
 
     @SerializedName("user_id")
-    private long userId;
+    private String userId;
 
     @SerializedName("user_name")
     private String userName;
@@ -17,7 +17,7 @@ public class NewsAuthorVO {
     @SerializedName("profile_image")
     private String profileImage;
 
-    public long getUserId() {
+    public String getUserId() {
         return userId;
     }
 

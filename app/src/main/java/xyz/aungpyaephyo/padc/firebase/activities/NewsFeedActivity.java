@@ -72,7 +72,7 @@ public class NewsFeedActivity extends AppCompatActivity implements GoogleApiClie
         NewsFeedModel.getInstance().loadNewsFeed();
 
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("155065313733-1lgn7qgb6teg7q7imb7butvd78md99oh.apps.googleusercontent.com")
+                .requestIdToken("198277606825-7l9028ivhlihapta5ha5r7ogq62khm4t.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
 
@@ -139,7 +139,10 @@ public class NewsFeedActivity extends AppCompatActivity implements GoogleApiClie
             startAddNewsActivity();
         } else {
             // Not signed in, launch the Sign In activity
-            Snackbar.make(rvNewsFeed, "You need to sign with Google to publish in MM-News.", Snackbar.LENGTH_INDEFINITE).setAction("Sign-In", new View.OnClickListener() {
+            Snackbar.make(
+                    rvNewsFeed, "You need to sign with Google to publish in MM-News.",
+                    Snackbar.LENGTH_INDEFINITE
+            ).setAction("Sign-In", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     signInWithGoogle();
@@ -157,6 +160,8 @@ public class NewsFeedActivity extends AppCompatActivity implements GoogleApiClie
     private void signInWithGoogle() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
+
+        mGoogleApiClient.connect();
     }
 
     private void processGoogleSignInResult(GoogleSignInResult signInResult) {
@@ -171,12 +176,13 @@ public class NewsFeedActivity extends AppCompatActivity implements GoogleApiClie
 
                 @Override
                 public void onFailureSignIn(String msg) {
-
+                    Snackbar.make(rvNewsFeed, "Your Google sign-in failed.", Snackbar.LENGTH_LONG).show();
                 }
             });
         } else {
             // Google Sign-In failed
-            Log.e(FirebaseApp.TAG, "Google Sign-In failed.");
+
+            Log.e(FirebaseApp.TAG, "Google Sign-In failed." +    signInResult.getStatus().toString());
             Snackbar.make(rvNewsFeed, "Your Google sign-in failed.", Snackbar.LENGTH_LONG).show();
         }
     }

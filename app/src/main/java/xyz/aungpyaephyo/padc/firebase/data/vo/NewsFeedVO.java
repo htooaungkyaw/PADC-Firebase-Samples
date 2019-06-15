@@ -2,6 +2,7 @@ package xyz.aungpyaephyo.padc.firebase.data.vo;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,10 +60,10 @@ public class NewsFeedVO {
     }
 
     public List<LikeVO> getLikes() {
-        return likes;
+        return likes == null ? new ArrayList<LikeVO>() : likes;
     }
 
     public List<CommentVO> getComments() {
-        return comments;
+        return comments == null ? new ArrayList<CommentVO>() : comments;
     }
 }
