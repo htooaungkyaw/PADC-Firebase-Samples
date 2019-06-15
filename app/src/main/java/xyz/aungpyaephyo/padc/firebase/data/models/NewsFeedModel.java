@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
-
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,16 +24,13 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
 import xyz.aungpyaephyo.padc.firebase.FirebaseApp;
 import xyz.aungpyaephyo.padc.firebase.data.vo.LikeVO;
 import xyz.aungpyaephyo.padc.firebase.data.vo.NewsFeedVO;

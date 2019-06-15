@@ -10,7 +10,7 @@ public class CommentVO {
 
     private long commentId;
 
-    private String userId;
+    private long userId;
 
     private String comment;
 
@@ -20,7 +20,7 @@ public class CommentVO {
         return commentId;
     }
 
-    public String getUserId() {
+    public long getUserId() {
         return userId;
     }
 
