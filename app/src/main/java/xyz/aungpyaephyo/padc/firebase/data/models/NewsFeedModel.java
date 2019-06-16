@@ -1,11 +1,21 @@
 package xyz.aungpyaephyo.padc.firebase.data.models;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.WriteBatch;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -16,8 +26,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import xyz.aungpyaephyo.padc.firebase.FirebaseApp;
 import xyz.aungpyaephyo.padc.firebase.data.vo.NewsFeedVO;
 import xyz.aungpyaephyo.padc.firebase.events.FirebaseEvents;
 
@@ -37,8 +51,11 @@ public class NewsFeedModel {
     private DatabaseReference mDatabaseReference;
     private DatabaseReference mNewsFeedDR;
 
+    private FirebaseFirestore mFirestore;
+
     private NewsFeedModel() {
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        mFirestore = FirebaseFirestore.getInstance();
     }
 
     public static NewsFeedModel getInstance() {
@@ -76,6 +93,9 @@ public class NewsFeedModel {
                         newsFeedList.add(newsFeed);
                     }
 
+
+                    uploadNewsFeedToFirestore(newsFeedList);
+
                     FirebaseEvents.NewsFeedLoadedEvent event = new FirebaseEvents.NewsFeedLoadedEvent(newsFeedList);
                     EventBus.getDefault().post(event);
                 }
@@ -86,6 +106,45 @@ public class NewsFeedModel {
 
             }
         });
+    }
+
+    public void uploadNewsFeedToFirestore(List<NewsFeedVO> news){
+
+        final Map<String, NewsFeedVO> map = new HashMap<>();
+
+        for (NewsFeedVO newsFeed : news) {
+            map.put(newsFeed.getFeedId()+"abcd", newsFeed);
+        }
+
+        final CollectionReference mmNewsFeed = mFirestore.collection("mmNewsFeed");
+        mmNewsFeed.document("news").set(map);
+
+        // Get a new write batch
+        /*
+        WriteBatch batch = mFirestore.batch();
+
+                for (NewsFeedVO newsFeed : news) {
+            final DocumentReference documentReference =
+                    mFirestore.collection("mmNewsFeed").
+                            document(newsFeed.getFeedId()+"abcd");
+
+            batch.set(documentReference, newsFeed);
+        }
+
+                batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d(FirebaseApp.TAG, "uploading complete");
+                    }
+                });
+
+                */
+
+    }
+
+    public void loadNewsFeedFromFirestore(){
+
+
     }
 
     /**
