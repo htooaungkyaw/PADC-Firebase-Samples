@@ -87,7 +87,7 @@ public class AddNewsActivity extends AppCompatActivity {
                 && resultCode == RESULT_OK && data != null
                 && data.getData() != null) {
             Uri uri = data.getData();
-            onPhotoTaken(uri.toString());
+            onPhotoTaken(uri);
             //mTakenPhotosAdapter.addNewData(uri.toString());
         }
     }
@@ -101,7 +101,7 @@ public class AddNewsActivity extends AppCompatActivity {
             Snackbar.make(etNewsContent, "You should select a photo relating to the news.", Snackbar.LENGTH_LONG).show();
         } else {
             showProgressDialogInfinite("Publishing your news");
-            NewsFeedModel.getInstance().uploadFile(vpAddedPhoto.getPhotoUrl(), new NewsFeedModel.UploadFileCallback() {
+            NewsFeedModel.getInstance().uploadFile(Uri.parse(vpAddedPhoto.getPhotoUrl()), new NewsFeedModel.UploadFileCallback() {
                 @Override
                 public void onUploadSucceeded(String uploadedPaths) {
                     dismissProgressDialog();
@@ -127,11 +127,11 @@ public class AddNewsActivity extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
 
-    private void onPhotoTaken(String photoUrl) {
-        if (TextUtils.isEmpty(photoUrl)) {
+    private void onPhotoTaken(Uri photoUrl) {
+        if (TextUtils.isEmpty(photoUrl.toString())) {
             Snackbar.make(etNewsContent, "ERROR : Path to photo is empty.", Snackbar.LENGTH_LONG).show();
         } else {
-            vpAddedPhoto.setData(photoUrl);
+            vpAddedPhoto.setData(photoUrl.toString());
             vpAddedPhoto.setVisibility(View.VISIBLE);
             vpAddPhoto.setVisibility(View.GONE);
         }

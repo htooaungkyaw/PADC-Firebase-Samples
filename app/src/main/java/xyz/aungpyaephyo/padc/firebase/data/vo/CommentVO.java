@@ -1,7 +1,5 @@
 package xyz.aungpyaephyo.padc.firebase.data.vo;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * Created by aung on 8/18/17.
  */
@@ -10,7 +8,7 @@ public class CommentVO {
 
     private long commentId;
 
-    private String userId;
+    private long userId;
 
     private String comment;
 
@@ -20,7 +18,7 @@ public class CommentVO {
         return commentId;
     }
 
-    public String getUserId() {
+    public long getUserId() {
         return userId;
     }
 

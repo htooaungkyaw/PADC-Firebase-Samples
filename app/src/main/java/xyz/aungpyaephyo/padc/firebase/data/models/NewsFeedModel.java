@@ -149,27 +149,33 @@ public class NewsFeedModel {
         mNewsFeedDR.child(String.valueOf(news.getPosedDate())).setValue(news);
     }
 
-    public void uploadFile(String fileToUpload, final UploadFileCallback callback) {
-        Uri file = Uri.parse(fileToUpload);
+    public void uploadFile(Uri fileToUpload, final UploadFileCallback callback) {
+
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl(FirebaseAppConstants.FIREBASE_STORAGE_BUCKET);
 
-        StorageReference uploadFileRef = storageRef.child(FirebaseAppConstants.UPLOAD_IMAGE_PATH + "/" + file.getLastPathSegment());
-        UploadTask uploadTask = uploadFileRef.putFile(file);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                callback.onUploadFailed(e.getMessage());
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri uploadedImageUrl = taskSnapshot.getDownloadUrl();
-                Log.d(FirebaseApp.TAG, "Uploaded Image Url : " + uploadedImageUrl);
+        StorageReference uploadFileRef =
+                storageRef.child(FirebaseAppConstants.UPLOAD_IMAGE_PATH + "/" + fileToUpload.getLastPathSegment());
 
-                callback.onUploadSucceeded(uploadedImageUrl.toString());
-            }
-        });
+        UploadTask uploadTask = uploadFileRef.putFile(fileToUpload);
+        uploadTask
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.onUploadFailed(e.getMessage());
+                    }
+
+                })
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        Uri uploadedImageUrl = taskSnapshot.getUploadSessionUri();
+                        Log.d(FirebaseApp.TAG, "Uploaded Image Url : " + uploadedImageUrl);
+
+                        callback.onUploadSucceeded(uploadedImageUrl.toString());
+                    }
+                });
     }
 
     /**

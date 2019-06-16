@@ -3,6 +3,7 @@ package xyz.aungpyaephyo.padc.firebase.utils;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
@@ -37,8 +38,6 @@ public class NotificationUtils {
         //Supporting both unicode & zawgyi
         String mmMessage = MMFontUtils.mmTextUnicodeOrigin(message);
 
-        //Large Icon
-        Bitmap appIcon = encodeResourceToBitmap(context, R.mipmap.ic_news_from_people);
 
         //Message in BigText Style
         NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
@@ -47,11 +46,16 @@ public class NotificationUtils {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setColor(context.getResources().getColor(R.color.accent))
                 .setSmallIcon(R.drawable.ic_news_from_people_noti)
-                .setLargeIcon(appIcon)
                 .setContentTitle(title)
                 .setContentText(mmMessage)
                 .setAutoCancel(true)
                 .setStyle(bigTextStyle);
+
+        //Large Icon
+        Bitmap appIcon = encodeResourceToBitmap(context, R.mipmap.ic_news_from_people);
+        if (appIcon != null){
+            builder.setLargeIcon(appIcon);
+        }
 
         //Notification action to Play Songs by Artist.
         saveNewsAction(context, NOTIFICATION_ID_NEW_MESSAGE, builder);
@@ -61,7 +65,8 @@ public class NotificationUtils {
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(resultPendingIntent);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);

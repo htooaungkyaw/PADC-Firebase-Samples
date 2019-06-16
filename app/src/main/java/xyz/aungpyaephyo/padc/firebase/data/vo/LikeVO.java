@@ -8,7 +8,7 @@ public class LikeVO {
 
     private long likeId;
 
-    private String userId;
+    private long userId;
 
     private long timeStamp;
 
@@ -16,7 +16,7 @@ public class LikeVO {
         return likeId;
     }
 
-    public String getUserId() {
+    public long getUserId() {
         return userId;
     }
 

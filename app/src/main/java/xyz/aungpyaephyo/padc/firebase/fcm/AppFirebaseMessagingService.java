@@ -12,6 +12,13 @@ import xyz.aungpyaephyo.padc.firebase.utils.NotificationUtils;
 
 public class AppFirebaseMessagingService extends FirebaseMessagingService {
 
+    @Override
+    public void onNewToken(String s) {
+        super.onNewToken(s);
+        //TODO syncUserRegistrationId(token);
+        Log.d(FirebaseApp.TAG, "FCM Token : " + s);
+    }
+
     public void onMessageReceived(RemoteMessage remoteMessage) {
         // Handle data payload of FCM messages.
         Log.d(FirebaseApp.TAG, "FCM Message : " + remoteMessage.getMessageId());
